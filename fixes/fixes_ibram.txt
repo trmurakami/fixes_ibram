@@ -1,7 +1,10 @@
+marc_remove(003)
+marc_add(003,_,BR-BrIBR)
+
 if marc_has('008')
   
 else 
-  marc_add('008', _ ,'200415s9999##################000#0#####|')
+  marc_add('008', _ ,'200415s9999##################000#0#por#|')
 end
 
 if marc_match('008/35-37','und')
@@ -10,4 +13,18 @@ end
 
 if marc_match('008/35-37','[/]{3}')
   marc_set('008/35-37','por')
+end
+
+marc_map('245a',title)
+parse_text(title,'^([\w\-]+)')
+set_array(artigos,o,os,a,as,um,uns,uma,umas,ao,aos,à,às,do,dos,da,das,dum,duns,duma,dumas,no,nos,na,nas,num,nuns,numa,numas,pelo,pelos,pela,pelas)
+
+if in(title,artigos)
+  count(title)
+  marc_add('245', ind1, $.title)
+end
+
+if marc_has('260c')
+  marc_map('260c',year)
+  marc_set('008/07-10',$.year)
 end
