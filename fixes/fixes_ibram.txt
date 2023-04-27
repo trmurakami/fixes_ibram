@@ -1,0 +1,13 @@
+if marc_has('008')
+  
+else 
+  marc_add('008', _ ,'200415s9999##################000#0#####|')
+end
+
+if marc_match('008/35-37','und')
+  marc_set('008/35-37','por')
+end
+
+if marc_match('008/35-37','[/]{3}')
+  marc_set('008/35-37','por')
+end
