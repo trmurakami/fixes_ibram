@@ -31,6 +31,12 @@ if marc_match(040b, 'Italiano')
     marc_set('008/35-37', 'ita')
 end
 
+marc_map(082a, class.a)
+marc_map(0822, class.2)
+marc_remove(082)
+marc_add('082', ind1, '1', ind2, '#', a , $.class.a, 2, $.class.2)
+remove_field(class)
+
 marc_map('245a',my.title)
 trim(my.title)
 parse_text(my.title,'^([\w\-]+)')
