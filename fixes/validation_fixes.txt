@@ -1,0 +1,7 @@
+marc_map(008,content_008)
+
+if all_match(content_008, '^\s*$')
+    add_field(error_008, '008 not found')
+else
+    add_field(error_008, '008 found')
+end
