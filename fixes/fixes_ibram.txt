@@ -45,5 +45,10 @@ end
 
 if marc_has('260c')
   marc_map('260c',year)
-  marc_set('008/07-10',$.year)
+  marc_map('260c',year_count)
+  parse_text(year_count,'(\d)')
+  count(year_count)
+  if all_equal(year_count, 4)
+    marc_set('008/07-10',$.year)
+  end
 end
