@@ -1,32 +1,46 @@
 marc_remove(003)
 marc_add(003,_,BR-BrIBR)
 
-if marc_has('008')
-  
-else 
-  marc_add('008',_,'200415s9999##################000#0#por#|')
+marc_map(008, content_008)
+if all_match(content_008, '^\s*$')
+    marc_set('008', '200415s9999##################000#0#por#|')
+end
+remove_field(content_008)
+
+if marc_match(040b, 'por')
+    marc_set('008/35-37', 'por')
 end
 
-if marc_match('008/35-37','und')
-  marc_set('008/35-37','por')
+if marc_match(040b, 'Português')
+    marc_set('008/35-37', 'por')
 end
 
-if marc_match('008/35-37','[\\\\\\]')
-  marc_set('008/35-37','por')
+if marc_match(040b, 'Inglês')
+    marc_set('008/35-37', 'eng')
+end
+
+if marc_match(040b, 'Espanhol')
+    marc_set('008/35-37', 'spa')
+end
+
+if marc_match(040b, 'Francês')
+    marc_set('008/35-37', 'fre')
+end
+
+if marc_match(040b, 'Italiano')
+    marc_set('008/35-37', 'ita')
 end
 
 marc_map('245a',my.title)
 trim(my.title)
 parse_text(my.title,'^([\w\-]+)')
-marc_add('995', a, $.my.title)
-marc_map('995a',my.titledowncase)
-lookup(my.titledowncase,"fixes/artigos.csv",sep_char:",")
+lookup(my.title.0,"fixes/artigos.csv",sep_char:",")
 
 
-if is_number(my.titledowncase)
+if is_number(my.title.0)
   marc_map('245a',my.titletrim)
   trim(my.titletrim)
-  marc_add('245', 'ind1', 0, 'ind2', $.my.titledowncase, 'a', $.my.titletrim)
+  marc_add('245', 'ind1', 0, 'ind2', $.my.title.0, 'a', $.my.titletrim)
 end
 
 if marc_has('260c')

@@ -1,7 +1,39 @@
-marc_map(008,content_008)
+marc_map(008, content_008)
 
 if all_match(content_008, '^\s*$')
-    add_field(error_008, '008 not found')
+    add_field(error_008, '008 empty')
 else
-    add_field(error_008, '008 found')
+    add_field(error_008, '008 ok')
 end
+
+marc_map(040b, language)
+
+marc_map('008/35-37', language_008)
+
+if marc_match(040b, 'por')
+    marc_set('008/35-37', 'por')
+end
+
+if marc_match(040b, 'Português')
+    marc_set('008/35-37', 'por')
+end
+
+if marc_match(040b, 'Inglês')
+    marc_set('008/35-37', 'eng')
+end
+
+if marc_match(040b, 'Espanhol')
+    marc_set('008/35-37', 'spa')
+end
+
+if marc_match(040b, 'Francês')
+    marc_set('008/35-37', 'fre')
+end
+
+if marc_match(040b, 'Italiano')
+    marc_set('008/35-37', 'ita')
+end
+
+
+
+marc_map(008, content_008_edited)
