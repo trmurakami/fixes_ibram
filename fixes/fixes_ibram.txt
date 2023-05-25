@@ -37,17 +37,36 @@ marc_remove(082)
 marc_add('082', ind1, '1', ind2, '#', a , $.class.a, 2, $.class.2)
 remove_field(class)
 
-marc_map('245a',my.title)
+marc_map('245a', my.title)
+marc_map('245a', my.titletrim)
+trim(my.titletrim)
+marc_map('245b', my.subtitle)
+marc_map('245c', my.titleresponsability)
 trim(my.title)
 parse_text(my.title,'^([\w\-]+)')
-lookup(my.title.0,"fixes/artigos.csv",sep_char:",")
-
-
-if is_number(my.title.0)
-  marc_map('245a',my.titletrim)
-  trim(my.titletrim)
-  marc_add('245', 'ind1', 0, 'ind2', $.my.title.0, 'a', $.my.titletrim)
+copy_field(my.title.0, my.article)
+lookup(my.article, "fixes/artigos.csv", sep_char:",")
+marc_remove(245)
+if is_number(my.article)
+    if all_equal(my.article, 2)
+        marc_add('245', 'ind1', 0, 'ind2', 2, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
+    end
+    if all_equal(my.article, 3)
+        marc_add('245', 'ind1', 0, 'ind2', 3, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
+    end
+    if all_equal(my.article, 4)
+        marc_add('245', 'ind1', 0, 'ind2', 4, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
+    end
+    if all_equal(my.article, 5)
+        marc_add('245', 'ind1', 0, 'ind2', 5, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
+    end
+    if all_equal(my.article, 6)
+        marc_add('245', 'ind1', 0, 'ind2', 6, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
+    end 
+else
+    marc_add('245', 'ind1', 0, 'ind2', 0, 'a', $.my.titletrim, 'b', $.my.subtitle, 'c', $.my.titleresponsability)
 end
+
 
 if marc_has('260c')
   marc_map('260c',year)
@@ -57,4 +76,16 @@ if marc_has('260c')
   if all_equal(year_count, 4)
     marc_set('008/07-10',$.year)
   end
+end
+
+if marc_match(942c, 'BK')
+    marc_set('942c', 'LIV')
+end
+
+if marc_match(952c, 'BK')
+    marc_set('952c', 'LIV')
+end
+
+if marc_match(952y, 'BK')
+    marc_set('952y', 'LIV')
 end
